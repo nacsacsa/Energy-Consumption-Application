@@ -2,16 +2,26 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 
-const meterRoutes = require('./controllers/meter')
-const meterReadingRoutes = require('./controllers/meterReading')
-const consumptionRoutes = require('./controllers/consumption')
+const meterRoutes = require('./routes/meter')
+const meterReadingRoutes = require('./routes/meterReading')
+const consumptionRoutes = require('./routes/consumption')
+
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json())
 
 app.use('/meter', meterRoutes)
 app.use('/meterReading', meterReadingRoutes)
 app.use('/consumption', consumptionRoutes)
 
-app.use(bodyParser.urlencoded({extended: false}))
-app.use(bodyParser.json())
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Headers', '*')
+    if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE')
+        return res.status(200).json({})
+    }
+    next()
+})
 
 app.use((req, res, next) => {
     const error = new Error('Not found')
