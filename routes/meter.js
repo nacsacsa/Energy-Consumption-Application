@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const db = require('../database/database')
 
-router.post('/', (req, res, next) => {
+router.post('/create', (req, res) => {
     const { name } = req.body
     
     if (!name) {
@@ -18,6 +18,51 @@ router.post('/', (req, res, next) => {
 
         res.status(201).json({
             message: 'Meter created',
+        })
+    })
+})
+
+router.delete('/delete/:id', (req, res) => {
+    const { id } = req.params
+
+    const sql = 'DELETE FROM meter WHERE id = ?'
+
+    db.run(sql, [id], function (err) {
+        if (err) {
+            return res.status(500).json({ error: err.message })
+        }
+
+        if (this.changes === 0) {
+            return res.status(404).json({ error: 'Meter not found' })
+        }
+
+        res.status(200).json({
+            message: 'Meter deleted'
+        })
+    })
+})
+
+router.put('/modify/:id', (req, res) => {
+    const { id } = req.params
+    const { name } = req.body
+
+    if (!name) {
+        return res.status(400).json({ error: 'name is mandatory' })
+    }
+
+    const sql = 'UPDATE meter SET name = ? WHERE id = ?'
+
+    db.run(sql, [name, id], function (err) {
+        if (err) {
+            return res.status(500).json({ error: err.message })
+        }
+
+        if (this.changes === 0) {
+            return res.status(404).json({ error: 'Meter not found' })
+        }
+
+        res.status(200).json({
+            message: 'Meter updated'
         })
     })
 })
