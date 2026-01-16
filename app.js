@@ -3,14 +3,14 @@ const app = express()
 const bodyParser = require('body-parser')
 
 const meterRoutes = require('./routes/meter')
-const meterReadingRoutes = require('./routes/meterReading')
+const meterReadingRoutes = require('./routes/reading')
 const consumptionRoutes = require('./routes/consumption')
 
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
 app.use('/meter', meterRoutes)
-app.use('/meterReading', meterReadingRoutes)
+app.use('/reading', meterReadingRoutes)
 app.use('/consumption', consumptionRoutes)
 
 app.use((req, res, next) => {

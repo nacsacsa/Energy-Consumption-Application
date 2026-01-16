@@ -6,7 +6,7 @@ router.post('/create', (req, res) => {
     const { name } = req.body
     
     if (!name) {
-        return res.status(400).json({ error: 'name is mandatory' })
+        return res.status(400).json({ error: 'Name is mandatory' })
     }
 
     const sql = 'INSERT INTO meter (name) VALUES (?)'
@@ -16,14 +16,12 @@ router.post('/create', (req, res) => {
             return res.status(500).json({ error: err.message })
         }
 
-        res.status(201).json({
-            message: 'Meter created',
-        })
+        res.status(201)
     })
 })
 
-router.delete('/delete/:id', (req, res) => {
-    const { id } = req.params
+router.delete('/delete/', (req, res) => {
+    const { id } = req.query
 
     const sql = 'DELETE FROM meter WHERE id = ?'
 
@@ -36,18 +34,16 @@ router.delete('/delete/:id', (req, res) => {
             return res.status(404).json({ error: 'Meter not found' })
         }
 
-        res.status(200).json({
-            message: 'Meter deleted'
-        })
+        res.status(200)
     })
 })
 
-router.put('/modify/:id', (req, res) => {
-    const { id } = req.params
+router.put('/modify/', (req, res) => {
+    const { id } = req.query
     const { name } = req.body
 
     if (!name) {
-        return res.status(400).json({ error: 'name is mandatory' })
+        return res.status(400).json({ error: 'Name is mandatory' })
     }
 
     const sql = 'UPDATE meter SET name = ? WHERE id = ?'
@@ -61,9 +57,7 @@ router.put('/modify/:id', (req, res) => {
             return res.status(404).json({ error: 'Meter not found' })
         }
 
-        res.status(200).json({
-            message: 'Meter updated'
-        })
+        res.status(200)
     })
 })
 
@@ -79,8 +73,8 @@ router.get('/', (req, res) => {
     })
 })
 
-router.get('/:id', (req, res) => {
-    const { id } = req.params
+router.get('/', (req, res) => {
+    const { id } = req.query
     const sql = 'SELECT * FROM meter WHERE id = ?'
 
     db.get(sql, [id], (err, row) => {
