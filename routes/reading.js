@@ -32,8 +32,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/create', (req, res) => {
-    const { meter_id, reading } = req.body
-    const time = new Date()
+    const { meter_id, reading, timestamp } = req.body
     
     if (!reading) {
         return res.status(400).json({ error: 'reading is mandatory' })
@@ -41,7 +40,7 @@ router.post('/create', (req, res) => {
 
     const sql = 'INSERT INTO meter_reading (timestamp, meter_id, reading) VALUES (?, ?, ?)'
 
-    db.run(sql, [time, meter_id, reading], function (err) {
+    db.run(sql, [timestamp, meter_id, reading], function (err) {
         if (err) {
             return res.status(500).json({ error: err.message })
         }
@@ -49,7 +48,7 @@ router.post('/create', (req, res) => {
             id: this.lastID,
             meter_id,
             reading,
-            timestamp: time
+            timestamp: timestamp
         })
     })
 })
@@ -96,7 +95,7 @@ router.delete('/delete/', (req, res) => {
             return res.status(404).json({ error: 'Meter reading not found' })
         }
 
-        res.status(200)
+        res.status(200).json()
     })
 })
 

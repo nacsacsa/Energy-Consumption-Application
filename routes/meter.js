@@ -16,7 +16,7 @@ router.post('/create', (req, res) => {
             return res.status(500).json({ error: err.message })
         }
 
-        res.status(201)
+        res.status(201).json()
     })
 })
 
@@ -34,7 +34,7 @@ router.delete('/delete/', (req, res) => {
             return res.status(404).json({ error: 'Meter not found' })
         }
 
-        res.status(200)
+        res.status(200).json()
     })
 })
 
@@ -57,7 +57,7 @@ router.put('/modify/', (req, res) => {
             return res.status(404).json({ error: 'Meter not found' })
         }
 
-        res.status(200)
+        res.status(200).json()
     })
 })
 
