@@ -134,7 +134,6 @@ Response:
         "reading": 1234,
         "timestamp": "2025-01-10T10:00:00.000Z"
     },
-
     {
         "id": 2,
         "meter_id": 1,
